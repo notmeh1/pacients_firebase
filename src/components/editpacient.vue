@@ -4,16 +4,19 @@
     <v-form ref="form" v-model="valid">
       <v-text-field
         :rules="[(v) => !!v || 'Por favor escribe el nombre del paciente']"
+        required
         label="Nombre"
         v-model="editPacient.nombre"
       />
       <v-text-field
         :rules="[(v) => !!v || 'Por favor escribe el apellido del paciente']"
+        required
         label="Apellido"
         v-model="editPacient.apellido"
       />
       <v-text-field
         :rules="[(v) => !!v || 'Por favor escribe la edad del paciente']"
+        required
         label="Edad"
         type="number"
         min="1"
@@ -23,12 +26,13 @@
       <v-select
         :items="previsionList"
         :rules="[(v) => !!v || 'Por favor elige una prevision']"
+        required
         label="Prevision"
         v-model="editPacient.prevision"
       ></v-select>
       <v-form> </v-form>
       <div class="d-flex">
-        <v-btn color="success" @click="editPacient()">Agregar paciente</v-btn>
+        <v-btn color="success" @click="editPacient()" :disabled="!valid">Guardar cambios</v-btn>
         <v-spacer></v-spacer>
         <v-btn color="error" @click="editPacientOverlay = !editPacientOverlay"
           >Cerrar</v-btn

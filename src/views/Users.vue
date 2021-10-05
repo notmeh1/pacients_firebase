@@ -18,7 +18,7 @@
           <v-overlay :value="addPacientOverlay">
             <v-card color="blue-grey darken-3" class="pa-5">
               <v-card-title><h1>Agregar nuevo paciente</h1></v-card-title>
-              <v-form ref="form" v-model="valid">
+              <v-form ref="form" v-model="addValid">
                 <v-text-field
                   :rules="[
                     (v) => !!v || 'Por favor escribe el nombre del paciente',
@@ -51,7 +51,10 @@
                 ></v-select>
                 <v-form> </v-form>
                 <div class="d-flex">
-                  <v-btn color="success" @click="addNewPacient()"
+                  <v-btn
+                    color="success"
+                    @click="addNewPacient()"
+                    :disabled="!addValid"
                     >Agregar paciente</v-btn
                   >
                   <v-spacer></v-spacer>
@@ -68,11 +71,12 @@
           <v-overlay :value="editPacientOverlay">
             <v-card color="blue-grey darken-3" class="pa-5">
               <v-card-title><h1>Editar paciente existente</h1></v-card-title>
-              <v-form ref="form" v-model="valid">
+              <v-form ref="form" v-model="editValid">
                 <v-text-field
                   :rules="[
                     (v) => !!v || 'Por favor escribe el nombre del paciente',
                   ]"
+                  required
                   label="Nombre"
                   v-model="newPacient.nombre"
                 />
@@ -80,6 +84,7 @@
                   :rules="[
                     (v) => !!v || 'Por favor escribe el apellido del paciente',
                   ]"
+                  required
                   label="Apellido"
                   v-model="newPacient.apellido"
                 />
@@ -87,6 +92,7 @@
                   :rules="[
                     (v) => !!v || 'Por favor escribe la edad del paciente',
                   ]"
+                  required
                   label="Edad"
                   type="number"
                   min="1"
@@ -101,7 +107,10 @@
                 ></v-select>
                 <v-form> </v-form>
                 <div class="d-flex">
-                  <v-btn color="success" @click="editPacient()"
+                  <v-btn
+                    color="success"
+                    @click="editPacient()"
+                    :disabled="!editValid"
                     >Guardar cambios</v-btn
                   >
                   <v-spacer></v-spacer>
@@ -175,7 +184,8 @@ export default {
     addPacientOverlay: false,
     editPacientOverlay: false,
     editPacientId: null,
-    valid: true,
+    addValid: true,
+    editValid: true,
     previsionList: ["fonasa", "isapre"],
     newPacient: {
       nombre: null,
@@ -199,9 +209,11 @@ export default {
       this.newPacient.apellido = null;
       this.newPacient.edad = null;
       this.addPacientOverlay = false;
+      this.$store.state.snackbar.addAlert.snackbar = true;
     },
     deletePacient(id) {
       deleteDoc(doc(db, "pacientes", id));
+      this.$store.state.snackbar.eraseAlert.snackbar = true;
     },
     editPacient() {
       let id = this.editPacientId;
@@ -215,6 +227,7 @@ export default {
       this.newPacient.apellido = null;
       this.newPacient.edad = null;
       this.editPacientOverlay = false;
+      this.$store.state.snackbar.editAlert.snackbar = true;
     },
     editPacientOpen(pacientId) {
       this.editPacientOverlay = !this.editPacientOverlay;
