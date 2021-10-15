@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat dense dark fixed class="mt-5 mx-10 rounded-pill">
+    <v-app-bar flat dense dark app class="mt-5 mx-10 rounded-pill">
       <v-app-bar-title
         ><v-icon>mdi-emoticon-cool-outline</v-icon></v-app-bar-title
       >

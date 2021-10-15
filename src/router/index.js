@@ -14,6 +14,14 @@ const routes = [
     },
   },
   {
+    path: "*",
+    name: "NotFound",
+    component: () => import(/* webpackChunkName: "notFound" */ "../views/NotFound.vue"),
+    meta: {
+      requireLogin: false,
+    },
+  },
+  {
     path: "/about",
     name: "About",
     component: () =>
